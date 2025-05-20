@@ -1,0 +1,57 @@
+#include<iostream>
+#include<string>
+#include<queue>
+#include<tuple>
+using namespace std;
+
+int BFS(int** graph, int n, int m) {
+	int re = 0;
+	bool** BFSvisit;
+	BFSvisit = new bool* [n];
+	for (int i = 0; i < n; i++) {
+		BFSvisit[i] = new bool[m];
+		for (int j = 0; j < m; j++)
+			BFSvisit[i][j] = false;
+	}
+
+	queue <pair< int, int >> q;
+	q.push({ 0, 0 });
+	BFSvisit[0][0] = true;
+
+	while (!q.empty()) {
+		re += 1;
+		for (int i = q.front().first; i < n; i++)
+		{
+			for (int j = q.front().second; j < m; j++)
+			{
+				if (graph[i][j] == 1 && BFSvisit[i][j] == false) {
+					q.push({ i,j });
+					BFSvisit[i][j] = true;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < n; i++)
+		delete[]BFSvisit[i];
+	delete[]BFSvisit;
+
+	return re;
+}
+
+int main() {
+	int** graph, n, m;
+	cin >> n >> m;
+
+	graph = new int* [n];
+	
+	for (int i = 0; i < n; i++) {
+		graph[i] = new int[m];
+		string str;  cin >> str;
+		for (int j = 0; j < m; j++)
+			graph[i][j] = str[j] - '0';
+	}
+
+	cout << BFS(graph, n, m) << endl;
+
+	return 0;
+}
